@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absa Next · Investment</title>
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f5f7fc;
+      font-family: 'Inter', sans-serif;
+      color: #1A1E2B;
+      line-height: 1.4;
+      padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* main app container – realistic spacing */
+    .app-container {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ---------- HEADER / NAV ---------- */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      padding: 12px 28px;
+      border-radius: 60px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
+      backdrop-filter: blur(4px);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .absa-mark {
+      background: #AF1C2E; /* Absa red */
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.5px;
+      box-shadow: 0 6px 12px rgba(175, 28, 46, 0.25);
+    }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.3px;
+      color: #1A1E2B;
+    }
+
+    .logo-text span {
+      font-weight: 400;
+      color: #6E7582;
+      font-size: 16px;
+      margin-left: 6px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-weight: 500;
+      font-size: 15px;
+      color: #4A4F5C;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a.active {
+      color: #AF1C2E;
+      font-weight: 600;
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #AF1C2E;
+      border-radius: 4px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .notification-badge {
+      background: #F0F2F8;
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4A4F5C;
+      font-size: 18px;
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .avatar {
+      background: #1A1E2B;
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ---------- MAIN GRID (realistic 3‑column layout) ---------- */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 2.1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ----- LEFT PANEL (summary / quick invest) ----- */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 24px 22px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .card-header h3 {
+      font-weight: 600;
+      font-size: 16px;
+      color: #5A5F6E;
+      letter-spacing: -0.2px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .card-header i {
+      color: #8E94A2;
+      font-size: 14px;
+    }
+
+    .balance-amount {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: #1A1E2B;
+      margin-bottom: 6px;
+    }
+
+    .balance-sub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6E7582;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .trend-up {
+      color: #2A9D5C;
+      background: #E8F5EE;
+      padding: 4px 10px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: #AF1C2E;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 22px;
+      border-radius: 40px;
+      flex: 1;
+      cursor: default;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 16px rgba(175, 28, 46, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .btn-outline {
+      background: #F7F8FC;
+      border: 1px solid #E4E7EE;
+      color: #1A1E2B;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 22px;
+      border-radius: 40px;
+      flex: 1;
+      cursor: default;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-outline i, .btn-primary i {
+      font-size: 16px;
+    }
+
+    /* portfolio mini allocation */
+    .allocation-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .alloc-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .alloc-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #3C414F;
+    }
+
+    .alloc-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 4px;
+    }
+
+    .alloc-percent {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    /* ----- MIDDLE PANEL (main chart + top holdings) ----- */
+    .middle-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .chart-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 24px 26px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chart-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .time-filters {
+      display: flex;
+      gap: 6px;
+      background: #F2F4F9;
+      padding: 4px;
+      border-radius: 30px;
+    }
+
+    .time-filters span {
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #5F6575;
+      border-radius: 30px;
+      cursor: default;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .time-filters span.active {
+      background: #ffffff;
+      color: #1A1E2B;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Simple but realistic SVG chart (hardcoded) */
+    .chart-area {
+      margin: 18px 0 6px;
+      width: 100%;
+      height: 180px;
+      position: relative;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .chart-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #ECEEF4;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #6E7582;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1A1E2B;
+    }
+
+    .stat-value.positive {
+      color: #2A9D5C;
+    }
+
+    /* holdings list (middle bottom) */
+    .holdings-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 22px 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .holdings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .holdings-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .holdings-header a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #AF1C2E;
+    }
+
+    .holding-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #F0F2F8;
+    }
+
+    .holding-row:last-child {
+      border-bottom: none;
+    }
+
+    .holding-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ticker-icon {
+      width: 42px;
+      height: 42px;
+      background: #F5F7FC;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #1A1E2B;
+    }
+
+    .holding-name {
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+    }
+
+    .holding-sub {
+      font-size: 13px;
+      color: #6E7582;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .holding-values {
+      text-align: right;
+    }
+
+    .holding-price {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .holding-change {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .positive {
+      color: #2A9D5C;
+    }
+
+    .negative {
+      color: #C13E3E;
+    }
+
+    /* ----- RIGHT PANEL (watchlist, insights) ----- */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .watchlist-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 22px 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .watchlist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .watchlist-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .watchlist-header i {
+      color: #8E94A2;
+      cursor: default;
+    }
+
+    .watch-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #F0F2F8;
+    }
+
+    .watch-item:last-child {
+      border-bottom: none;
+    }
+
+    .watch-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .watch-symbol {
+      font-weight: 700;
+      font-size: 15px;
+      background: #F5F7FC;
+      padding: 6px 10px;
+      border-radius: 12px;
+      color: #1A1E2B;
+    }
+
+    .watch-name {
+      font-weight: 500;
+      font-size: 14px;
+      color: #4A4F5C;
+    }
+
+    .watch-price {
+      font-weight: 600;
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .watch-change {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .insight-banner {
+      background: linear-gradient(135deg, #1A1E2B 0%, #2C3142 100%);
+      border-radius: 28px;
+      padding: 24px 22px;
+      color: white;
+      box-shadow: 0 12px 28px rgba(26, 30, 43, 0.2);
+    }
+
+    .insight-banner i {
+      font-size: 24px;
+      opacity: 0.9;
+      margin-bottom: 16px;
+      color: #E8B4B8;
+    }
+
+    .insight-banner h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .insight-banner p {
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.8;
+      font-weight: 400;
+    }
+
+    .insight-banner .btn-insight {
+      margin-top: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 22px;
+      border-radius: 40px;
+      width: fit-content;
+      cursor: default;
+      transition: background 0.2s;
+    }
+
+    /* ---------- FOOTER (realistic) ---------- */
+    .footer-note {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 6px 0;
+      font-size: 13px;
+      color: #7D8392;
+      font-weight: 500;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    /* responsiveness tweaks */
+    @media (max-width: 1200px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr 1.8fr 1fr;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr 1.5fr;
+      }
+      .right-panel {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .right-panel {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+      .navbar {
+        border-radius: 40px;
+        padding: 12px 20px;
+      }
+      .nav-links {
+        display: none; /* simplify on mobile */
+      }
+      .balance-amount {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+      .card, .chart-card, .holdings-card, .watchlist-card, .insight-banner {
+        border-radius: 22px;
+        padding: 18px;
+      }
+      .btn-primary, .btn-outline {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+    }
+
+    /* subtle interaction (not functional, just realistic) */
+    .btn-primary:active, .btn-outline:active {
+      transform: scale(0.98);
+    }
+    .btn-primary:hover, .btn-outline:hover {
+      opacity: 0.92;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navigation bar -->
+    <header class="navbar">
+      <div class="logo-area">
+        <div class="absa-mark">A</div>
+        <div class="logo-text">Absa <span>Next</span></div>
+      </div>
+      <div class="nav-links">
+        <a href="#" class="active">Portfolio</a>
+        <a href="#">Markets</a>
+        <a href="#">Discover</a>
+        <a href="#">Insights</a>
+      </div>
+      <div class="user-profile">
+        <div class="notification-badge"><i class="far fa-bell"></i></div>
+        <div class="avatar">TK</div>
+      </div>
+    </header>
+
+    <!-- 3‑column main dashboard -->
+    <div class="dashboard-grid">
+      <!-- LEFT: summary + quick invest -->
+      <aside class="left-panel">
+        <!-- total balance card -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Portfolio value</h3>
+            <i class="fas fa-chevron-right"></i>
+          </div>
+          <div class="balance-amount">R 428,650.20</div>
+          <div class="balance-sub">
+            <span class="trend-up"><i class="fas fa-arrow-up"></i> 2.34%</span>
+            <span>+ R 9,821.40 today</span>
+          </div>
+          <div class="quick-actions">
+            <div class="btn-primary"><i class="fas fa-plus-circle"></i> Invest</div>
+            <div class="btn-outline"><i class="fas fa-exchange-alt"></i> Transfer</div>
+          </div>
+        </div>
+
+        <!-- allocation card -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Asset allocation</h3>
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="allocation-list">
+            <div class="alloc-item">
+              <div class="alloc-label"><span class="alloc-dot" style="background: #AF1C2E;"></span> Equities</div>
+              <div class="alloc-percent">58%</div>
+            </div>
+            <div class="alloc-item">
+              <div class="alloc-label"><span class="alloc-dot" style="background: #2A9D5C;"></span> Bonds</div>
+              <div class="alloc-percent">22%</div>
+            </div>
+            <div class="alloc-item">
+              <div class="alloc-label"><span class="alloc-dot" style="background: #E8B4B8;"></span> ETFs</div>
+              <div class="alloc-percent">14%</div>
+            </div>
+            <div class="alloc-item">
+              <div class="alloc-label"><span class="alloc-dot" style="background: #8E94A2;"></span> Cash</div>
+              <div class="alloc-percent">6%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- quick tip card (extra realism) -->
+        <div class="card" style="background: #F9FAFE; border: 1px solid #EFF1F8;">
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <i class="fas fa-lightbulb" style="color: #AF1C2E; font-size: 20px; margin-top: 4px;"></i>
+            <div>
+              <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Auto‑invest is on</div>
+              <div style="font-size: 13px; color: #6E7582; line-height: 1.4;">R 2,500 monthly into your TFSA. Next: 1 Nov.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MIDDLE: chart + holdings -->
+      <main class="middle-panel">
+        <!-- performance chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <h2>Performance</h2>
+            <div class="time-filters">
+              <span>1D</span>
+              <span>1W</span>
+              <span class="active">1M</span>
+              <span>1Y</span>
+              <span>All</span>
+            </div>
+          </div>
+          <!-- realistic SVG chart line (static but looks like real data) -->
+          <div class="chart-area">
+            <svg class="chart-svg" viewBox="0 0 600 180" preserveAspectRatio="none">
+              <!-- grid lines (subtle) -->
+              <line x1="0" y1="30" x2="600" y2="30" stroke="#F0F2F8" stroke-width="1.5" />
+              <line x1="0" y1="70" x2="600" y2="70" stroke="#F0F2F8" stroke-width="1.5" />
+              <line x1="0" y1="110" x2="600" y2="110" stroke="#F0F2F8" stroke-width="1.5" />
+              <line x1="0" y1="150" x2="600" y2="150" stroke="#F0F2F8" stroke-width="1.5" />
+              <!-- area under line (soft) -->
+              <path d="M0,140 L30,130 L60,125 L90,100 L120,110 L150,90 L180,80 L210,75 L240,60 L270,70 L300,50 L330,55 L360,40 L390,35 L420,45 L450,30 L480,25 L510,40 L540,30 L570,20 L600,25 L600,180 L0,180 Z" fill="#AF1C2E" opacity="0.06" />
+              <!-- main line -->
+              <path d="M0,140 L30,130 L60,125 L90,100 L120,110 L150,90 L180,80 L210,75 L240,60 L270,70 L300,50 L330,55 L360,40 L390,35 L420,45 L450,30 L480,25 L510,40 L540,30 L570,20 L600,25" stroke="#AF1C2E" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- small dot at end -->
+              <circle cx="600" cy="25" r="5" fill="#AF1C2E" stroke="white" stroke-width="2.5" />
+              <!-- last point highlight -->
+              <circle cx="600" cy="25" r="8" fill="#AF1C2E" opacity="0.15" />
+            </svg>
+          </div>
+          <div class="chart-stats">
+            <div class="stat-item">
+              <span class="stat-label">Returns (1M)</span>
+              <span class="stat-value positive">+ R 12,840</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Best performer</span>
+              <span class="stat-value">Satrix 40</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Volatility</span>
+              <span class="stat-value">Medium</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- top holdings -->
+        <div class="holdings-card">
+          <div class="holdings-header">
+            <h3>Top holdings</h3>
+            <a href="#">View all <i class="fas fa-arrow-right" style="font-size: 12px; margin-left: 4px;"></i></a>
+          </div>
+          <div class="holding-row">
+            <div class="holding-info">
+              <div class="ticker-icon">STX40</div>
+              <div>
+                <div class="holding-name">Satrix 40</div>
+                <div class="holding-sub">JSE · ETF</div>
+              </div>
+            </div>
+            <div class="holding-values">
+              <div class="holding-price">R 72,340</div>
+              <div class="holding-change positive"><i class="fas fa-arrow-up"></i> 1.8%</div>
+            </div>
+          </div>
+          <div class="holding-row">
+            <div class="holding-info">
+              <div class="ticker-icon">AAPL</div>
+              <div>
+                <div class="holding-name">Apple Inc.</div>
+                <div class="holding-sub">NASDAQ · Equity</div>
+              </div>
+            </div>
+            <div class="holding-values">
+              <div class="holding-price">R 58,210</div>
+              <div class="holding-change positive"><i class="fas fa-arrow-up"></i> 3.2%</div>
+            </div>
+          </div>
+          <div class="holding-row">
+            <div class="holding-info">
+              <div class="ticker-icon">ABG</div>
+              <div>
+                <div class="holding-name">Absa Group</div>
+                <div class="holding-sub">JSE · Equity</div>
+              </div>
+            </div>
+            <div class="holding-values">
+              <div class="holding-price">R 41,890</div>
+              <div class="holding-change negative"><i class="fas fa-arrow-down"></i> 0.6%</div>
+            </div>
+          </div>
+          <div class="holding-row">
+            <div class="holding-info">
+              <div class="ticker-icon">RB</div>
+              <div>
+                <div class="holding-name">Richemont</div>
+                <div class="holding-sub">JSE · Equity</div>
+              </div>
+            </div>
+            <div class="holding-values">
+              <div class="holding-price">R 32,150</div>
+              <div class="holding-change positive"><i class="fas fa-arrow-up"></i> 2.1%</div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- RIGHT: watchlist + insight -->
+      <aside class="right-panel">
+        <!-- watchlist card -->
+        <div class="watchlist-card">
+          <div class="watchlist-header">
+            <h3>Watchlist</h3>
+            <i class="fas fa-ellipsis-h"></i>
+          </div>
+          <div class="watch-item">
+            <div class="watch-left">
+              <span class="watch-symbol">NPN</span>
+              <span class="watch-name">Naspers</span>
+            </div>
+            <div>
+              <div class="watch-price">R 3,245.80</div>
+              <div class="watch-change positive">+1.2%</div>
+            </div>
+          </div>
+          <div class="watch-item">
+            <div class="watch-left">
+              <span class="watch-symbol">FSR</span>
+              <span class="watch-name">FirstRand</span>
+            </div>
+            <div>
+              <div class="watch-price">R 68.42</div>
+              <div class="watch-change positive">+0.9%</div>
+            </div>
+          </div>
+          <div class="watch-item">
+            <div class="watch-left">
+              <span class="watch-symbol">SOL</span>
+              <span class="watch-name">Sasol</span>
+            </div>
+            <div>
+              <div class="watch-price">R 152.30</div>
+              <div class="watch-change negative">-0.4%</div>
+            </div>
+          </div>
+          <div class="watch-item">
+            <div class="watch-left">
+              <span class="watch-symbol">BTC</span>
+              <span class="watch-name">Bitcoin</span>
+            </div>
+            <div>
+              <div class="watch-price">R 945,200</div>
+              <div class="watch-change positive">+4.3%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- insight banner (absa next style) -->
+        <div class="insight-banner">
+          <i class="fas fa-chart-line"></i>
+          <h4>Market pulse</h4>
+          <p>JSE All‑share up 0.8% this week. Tech and financials lead gains. Consider rebalancing your equity exposure.</p>
+          <div class="btn-insight">Read analysis <i class="fas fa-arrow-right" style="margin-left: 6px; font-size: 12px;"></i></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- simple footer (realistic absa) -->
+    <div class="footer-note">
+      <div>© 2025 Absa Next · Investment dashboard</div>
+      <div class="footer-links">
+        <span>Terms</span>
+        <span>Privacy</span>
+        <span>Security</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
